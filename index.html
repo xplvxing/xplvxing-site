@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>西皮旅行 XP Travel — 用生活的方式去旅行</title>
+<meta name="description" content="西皮旅行 XP Travel：一支专注「微旅居」的旅行内容与实践团队。用生活的方式去旅行，像当地人一样自在畅游。" />
+<style>
+  :root{
+    --green:#2D7A3E; --green-dark:#1F5C2B; --green-light:#E8F3EA;
+    --red:#EF4444; --red-dark:#DC2626;
+    --bg:#FAFBF8; --surface:#FFFFFF; --ink:#1E1C1A; --ink-soft:#6B6560;
+    --line:#E8E2D9; --radius:20px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",Segoe UI,sans-serif;
+    line-height:1.7; font-size:16px;
+  }
+  /* 中英文切换 */
+  .zh,.en{display:inline;}
+  .lang-en .zh{display:none;}
+  .lang-zh .en{display:none;}
+  a{color:inherit;text-decoration:none;}
+
+  /* 顶部导航 */
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    background:rgba(250,251,248,0.94); backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+    display:flex; align-items:center; justify-content:space-between;
+    padding:12px 20px; max-width:1080px; margin:0 auto;
+  }
+  .brand-logo{height:38px; width:auto; display:block; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,.08);}
+  .lang-toggle{
+    padding:7px 18px; border-radius:999px; border:1px solid var(--line);
+    background:transparent; font-size:13px; font-weight:700; letter-spacing:1px;
+    color:var(--ink-soft); cursor:pointer;
+  }
+  .lang-toggle:hover{border-color:var(--green); color:var(--green);}
+
+  main{max-width:1080px; margin:0 auto; padding:0 20px;}
+
+  /* Hero */
+  .hero{
+    background:linear-gradient(170deg,#FFFDF9 0%,#F5F0E8 50%,#EBE5DA 100%);
+    border-radius:0 0 28px 28px; text-align:center;
+    padding:72px 24px 64px; margin-bottom:8px;
+  }
+  .hero-logo-img{
+    height:clamp(120px,20vw,170px); width:auto; display:block;
+    margin:0 auto 28px; border-radius:14px; box-shadow:0 6px 20px rgba(0,0,0,.08);
+  }
+  .hero-slogan{font-size:clamp(18px,3.6vw,24px); color:var(--ink-soft); max-width:640px; margin:0 auto 36px; line-height:1.6;}
+  .hero-tagline{display:inline-block; margin-top:14px; font-size:clamp(20px,4.4vw,30px); font-weight:800; color:var(--green); letter-spacing:.5px;}
+  .hero-cta{
+    display:inline-block; padding:15px 40px; border-radius:999px;
+    background:var(--green); color:#fff; font-weight:700; font-size:16px;
+    transition:.2s; box-shadow:0 8px 20px rgba(45,122,62,.25);
+  }
+  .hero-cta:hover{background:var(--green-dark); transform:translateY(-2px);}
+
+  /* Section */
+  .section{padding:64px 0;}
+  .section-head{margin-bottom:40px;}
+  .eyebrow{font-size:13px; letter-spacing:4px; color:var(--red); font-weight:800; margin-bottom:10px;}
+  .section-head h2{font-size:clamp(26px,5vw,34px); font-weight:700; margin:0 0 10px;}
+  .section-head .sub{color:var(--ink-soft); font-size:16px; max-width:680px;}
+
+  /* 面板 */
+  .panel{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:28px; margin-bottom:18px;}
+  .panel-title{font-size:20px; font-weight:700; color:var(--green); border-bottom:3px solid var(--green-light); padding-bottom:10px; margin-bottom:18px;}
+  .li{margin-bottom:14px; font-size:15px;}
+  .li .b{color:var(--ink); font-weight:700;}
+
+  /* 阵地 */
+  .presence{background:#F4F7F4; border-radius:28px;}
+  .group-title{
+    font-size:17px; letter-spacing:1px; color:var(--green-dark); font-weight:700;
+    border-left:6px solid var(--green); padding-left:14px; margin:42px 0 18px;
+  }
+  .pod-plats{font-size:13px; color:var(--ink-soft); margin:-6px 0 18px; padding-left:20px; line-height:1.6;}
+
+  /* auto-fit 修复：单个卡片时自动占满整行 */
+  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(248px,1fr)); gap:16px;}
+  .card{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:20px; display:flex; gap:16px; align-items:center;}
+  .logo-box{
+    flex:0 0 56px; height:56px; width:56px; border-radius:15px; overflow:hidden;
+    display:flex; align-items:center; justify-content:center; background:#f1f1f1; color:#fff; font-weight:800; font-size:13px; text-align:center;
+  }
+  .logo-box.wechat{background:#07C160;}
+  .logo-box.channels{background:#FA9D3B;}
+  .logo-box.douyin{background:#161823;}
+  .logo-box.xhs{background:#FF2442;}
+  .logo-box.weibo{background:#E6162D;}
+  .logo-box.douban{background:#2E963D;}
+  .logo-box.ig{background:#E1306C;}
+  .logo-box.xyz{background:#5B9BD5;}
+  .card .meta{min-width:0; flex:1;}
+  .card .meta .plat{font-size:12px; color:var(--ink-soft); letter-spacing:1px;}
+  .card .meta .name{font-size:18px; font-weight:700; margin-top:2px; word-break:break-word;}
+
+  .addr-card{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:22px 24px;}
+  .addr-card .loc{font-size:18px; font-weight:700; color:var(--green-dark); margin-bottom:5px;}
+  .addr-card .addr{font-size:14px; color:var(--ink-soft); line-height:1.6;}
+
+  .base{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:28px;}
+  .base h3{font-size:22px; font-weight:700; margin:0 0 4px;}
+  .base .loc{font-size:14px; color:var(--green); font-weight:700; letter-spacing:1px; margin-bottom:14px;}
+  .base .desc{font-size:15px; color:var(--ink-soft); margin-bottom:18px;}
+  .room-list{margin-top:14px;}
+  .room{padding:12px 16px; margin-bottom:10px; background:var(--green-light); border-radius:13px; font-size:15px; border-left:5px solid var(--green);}
+  .room .b{color:var(--green-dark); font-weight:700;}
+
+  /* 联系 */
+  .contact-sec{background:#F4F7F4; border-radius:28px;}
+  .contact-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px;}
+  .contact{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:36px 28px; text-align:center;}
+  .contact .big{font-size:24px; font-weight:700; color:var(--green-dark); margin-bottom:6px;}
+  .contact .sub{font-size:15px; color:var(--ink-soft);}
+  .contact .sub a{border-bottom:1px dashed var(--green); color:var(--green);}
+
+  /* 页脚 */
+  footer{background:var(--ink); color:#B8B0A6; text-align:center; padding:48px 24px; font-size:14px; margin-top:64px;}
+  footer .wm{font-size:22px; color:#fff; margin-bottom:12px; font-weight:700;}
+
+  /* 移动端适配 */
+  @media (max-width:560px){
+    .hero{padding:56px 20px 48px;}
+    .hero-logo-img{height:120px;}
+    .grid{grid-template-columns:1fr;}
+    .topbar{padding:10px 16px;}
+    .brand-logo{height:34px;}
+  }
+</style>
+</head>
+<body class="lang-zh">
+
+  <!-- 顶部导航 -->
+  <header class="topbar">
+    <img class="brand-logo" src="logo.jpg" alt="西皮旅行" />
+    <button class="lang-toggle" id="langBtn">EN</button>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <img class="hero-logo-img" src="logo.jpg" alt="西皮旅行" />
+    <p class="hero-slogan">
+      <span class="zh">你所向往的旅行是什么？<br>你所向往的生活又是什么？<br><span class="hero-tagline">把旅行变成生活，在生活中旅行</span></span>
+      <span class="en">What kind of travel do you yearn for?<br>What kind of life do you dream of?<br><span class="hero-tagline">Turn travel into life; travel through life.</span></span>
+    </p>
+    <a class="hero-cta" href="#presence">
+      <span class="zh">在以下阵地找到我们</span>
+      <span class="en">Find Us Everywhere</span>
+    </a>
+  </section>
+
+  <main>
+    <!-- 关于 -->
+    <section class="section" id="about">
+      <div class="section-head">
+        <div class="eyebrow"><span class="zh">关于西皮旅行</span><span class="en">About XP Travel</span></div>
+        <h2><span class="zh">用生活的方式去旅行</span><span class="en">Travel the Way You Live</span></h2>
+        <p class="sub">
+          <span class="zh">一支专注「微旅居」的旅行内容与实践团队。不赶景点，不堆打卡，而是住下来，把一段日子过成生活。</span>
+          <span class="en">A travel content &amp; practice team focused on micro-sojourns — settling in and turning days into life.</span>
+        </p>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title"><span class="zh">品牌故事</span><span class="en">Our Story</span></div>
+        <div class="li"><span class="b">2007</span> — <span class="zh">豆瓣「出国自助游教室」出发，教大家迈出探索世界的第一步</span><span class="en">Started on Douban as "XP Academy," teaching people to take their first step into exploring the world</span></div>
+        <div class="li"><span class="b">2018</span> — <span class="zh">西皮旅行创立——一家专注在地体验和深度旅行的旅行顾问机构，曾经在清迈、大阪、首尔、长滩岛、巴厘岛、斯里兰卡等地都设有我们的基地</span><span class="en">Founded XP Travel — a travel consultancy focused on local experiences, with bases once spanning Chiang Mai, Osaka, Seoul, Boracay, Bali and Sri Lanka</span></div>
+        <div class="li"><span class="b">2022</span> — <span class="zh">启动西皮实验室项目，探索「住下来，把一段日子过成生活」的微旅居方式</span><span class="en">Launched XP Lab to explore micro-sojourn living</span></div>
+        <div class="li"><span class="b"><span class="zh">今天</span><span class="en">Today</span></span> — <span class="zh">西皮完成「学 — 行 — 活」的三段式品牌重构，旅游之外，独立运营四家民宿、两家餐厅和一家咖啡店，成为一支覆盖媒体、在地体验、实体空间与长效服务的旅行团队</span><span class="en">XP completed its three-phase evolution — Learn · Travel · Live. Beyond travel, we run four guesthouses, two restaurants and a cafe</span></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title"><span class="zh">三大品牌线</span><span class="en">Three Brand Lines</span></div>
+        <div class="li"><span class="b">出国自助游教室</span> · XP Academy — <span class="zh">教大家迈出探索世界的第一步（学）</span><span class="en">Your first step (Learn)</span></div>
+        <div class="li"><span class="b">西皮旅行</span> · XP Travel — <span class="zh">带大家深度游玩（行）</span><span class="en">Deep journeys (Travel)</span></div>
+        <div class="li"><span class="b">西皮实验室</span> · XP Lab — <span class="zh">和大家共创在地微旅居生活（活）</span><span class="en">Co-create (Live)</span></div>
+      </div>
+    </section>
+
+    <!-- 阵地 -->
+    <section class="section presence" id="presence">
+      <div class="section-head">
+        <div class="eyebrow"><span class="zh">我们的阵地</span><span class="en">Where To Find Us</span></div>
+        <h2><span class="zh">可以在以下阵地找到我们</span><span class="en">You Can Find Us Everywhere</span></h2>
+        <p class="sub"><span class="zh">这是西皮旅行的线下基地、民宿与全部官方账号。</span><span class="en">Our bases, guesthouses, and all official accounts.</span></p>
+      </div>
+
+      <div class="group-title"><span class="zh">我们的线下基地</span><span class="en">Our Bases</span></div>
+      <div class="grid">
+        <div class="addr-card">
+          <div class="loc"><span class="zh">西皮一间房民宿 · 西皮私厨小馆</span><span class="en">XP Guesthouse · Bistro</span></div>
+          <div class="addr"><span class="zh">云南大理剑川县沙溪镇寺登街 17 号</span><span class="en">17 Sideng St, Shaxi, Jianchuan, Dali, Yunnan</span></div>
+        </div>
+        <div class="addr-card">
+          <div class="loc"><span class="zh">西皮私厨小酒馆 · 小满餐厅</span><span class="en">Xiaoman Restaurant · Bar</span></div>
+          <div class="addr"><span class="zh">云南大理剑川县沙溪镇东南村西门 83 号</span><span class="en">83 Ximen, Dongnan Village, Shaxi, Jianchuan, Dali</span></div>
+        </div>
+        <div class="addr-card">
+          <div class="loc"><span class="zh">西皮三重奏咖啡</span><span class="en">XP Trio Cafe</span></div>
+          <div class="addr"><span class="zh">东莞市虎门镇虎门大道达成大厦写字楼 3 楼 305</span><span class="en">Rm 305, 3/F, Dacheng Building, Humen, Dongguan</span></div>
+        </div>
+      </div>
+
+      <div class="group-title"><span class="zh">我们的民宿</span><span class="en">Our Guesthouses</span></div>
+      <div class="grid">
+        <div class="base">
+          <h3><span class="zh">西皮一间房 · 民宿集群</span><span class="en">XP Guesthouses</span></h3>
+          <div class="loc"><span class="zh">云南 · 大理沙溪</span><span class="en">Yunnan · Dali Shaxi</span></div>
+          <div class="desc"><span class="zh">《去有风的地方》主要拍摄地、茶马古道唯一幸存古集市旁。四间房不同定位，满足不同旅居需求。</span><span class="en">Filming location of "Meet Yourself." Four guesthouses, each unique.</span></div>
+          <div class="room-list">
+            <div class="room"><span class="b"><span class="zh">西皮一间房 1.0</span><span class="en">XP 1.0</span></span> — <span class="zh">只有一间房的观景套房</span><span class="en">A single panoramic suite</span></div>
+            <div class="room"><span class="b"><span class="zh">西皮一间房 2.0 古镇佳园</span><span class="en">XP 2.0</span></span> — <span class="zh">2 房 1 厅的亲子房</span><span class="en">2BR family apartment</span></div>
+            <div class="room"><span class="b"><span class="zh">西皮一间房 3.0 海一小院</span><span class="en">XP 3.0</span></span> — <span class="zh">两层独栋 270° 田园景观</span><span class="en">Standalone 2-story, 270° views</span></div>
+            <div class="room"><span class="b"><span class="zh">西皮一间房 4.0 小满院子</span><span class="en">XP 4.0</span></span> — <span class="zh">独栋复式超大套房，适合长租</span><span class="en">Duplex suite, great for long stays</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="group-title"><span class="zh">播客 · Podcasts</span><span class="en">Podcasts</span></div>
+      <div class="pod-plats"><span class="zh">（小宇宙 / 苹果播客 / QQ音乐 / 网易云 / 喜马拉雅 / Spotify / Pocket Casts）</span><span class="en">(Xiaoyuzhou / Apple Podcasts / QQ Music / NetEase Cloud Music / Ximalaya / Spotify / Pocket Casts)</span></div>
+      <div class="grid">
+        <div class="card"><div class="logo-box xyz">播</div><div class="meta"><div class="plat"><span class="zh">播客 · 普通话</span><span class="en">Podcast · Mandarin</span></div><div class="name">西皮实验室</div></div></div>
+        <div class="card"><div class="logo-box xyz">播</div><div class="meta"><div class="plat"><span class="zh">播客 · 粤语</span><span class="en">Podcast · Cantonese</span></div><div class="name">走得快好世界</div></div></div>
+        <div class="card"><div class="logo-box xyz">播</div><div class="meta"><div class="plat"><span class="zh">播客 · 东莞话</span><span class="en">Podcast · Dongguan Dialect</span></div><div class="name">打天打瓦</div></div></div>
+      </div>
+
+      <div class="group-title"><span class="zh">新媒体 · Social Media</span><span class="en">Social Media</span></div>
+      <div class="grid">
+        <div class="card"><div class="logo-box wechat">微</div><div class="meta"><div class="plat"><span class="zh">微信公众号</span><span class="en">WeChat OA</span></div><div class="name">出国自助游教室</div></div></div>
+        <div class="card"><div class="logo-box wechat">微</div><div class="meta"><div class="plat"><span class="zh">微信公众号</span><span class="en">WeChat OA</span></div><div class="name">西皮旅行</div></div></div>
+        <div class="card"><div class="logo-box wechat">微</div><div class="meta"><div class="plat"><span class="zh">微信公众号</span><span class="en">WeChat OA</span></div><div class="name">云南沙溪古镇</div></div></div>
+        <div class="card"><div class="logo-box channels">视</div><div class="meta"><div class="plat"><span class="zh">微信视频号</span><span class="en">WeChat Channels</span></div><div class="name">西皮旅行</div></div></div>
+        <div class="card"><div class="logo-box douyin">抖</div><div class="meta"><div class="plat"><span class="zh">抖音</span><span class="en">Douyin</span></div><div class="name">西皮旅行</div></div></div>
+        <div class="card"><div class="logo-box xhs">红</div><div class="meta"><div class="plat"><span class="zh">小红书</span><span class="en">Xiaohongshu</span></div><div class="name">西皮旅行 XPTRAVEL</div></div></div>
+        <div class="card"><div class="logo-box weibo">博</div><div class="meta"><div class="plat"><span class="zh">微博</span><span class="en">Weibo</span></div><div class="name">@自助游教室</div></div></div>
+        <div class="card"><div class="logo-box douban">豆</div><div class="meta"><div class="plat"><span class="zh">豆瓣</span><span class="en">Douban</span></div><div class="name"><span class="zh">出国自助游教室小组</span><span class="en">XP Academy Group</span></div></div></div>
+        <div class="card"><div class="logo-box ig">IG</div><div class="meta"><div class="plat">Instagram</div><div class="name">西皮旅行 XPTRAVEL</div></div></div>
+      </div>
+    </section>
+
+    <!-- 联系 -->
+    <section class="section contact-sec" id="contact">
+      <div class="section-head">
+        <div class="eyebrow"><span class="zh">联系我们</span><span class="en">Get In Touch</span></div>
+        <h2><span class="zh">保持联络</span><span class="en">Stay Connected</span></h2>
+      </div>
+      <div class="contact-grid">
+        <div class="contact">
+          <div class="big"><span class="zh">西皮旅行顾问 Yan</span><span class="en">XP Travel Advisor Yan</span></div>
+          <div class="sub"><span class="zh">微信号：</span><a href="#" onclick="copyText('yanzzy123');return false;">yanzzy123</a></div>
+        </div>
+        <div class="contact">
+          <div class="big"><span class="zh">邮箱</span><span class="en">Email</span></div>
+          <div class="sub"><a href="mailto:sanshao@xplvxing.com">sanshao@xplvxing.com</a></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wm">西皮旅行 · XP Travel</div>
+    <div><span class="zh">用生活的方式去旅行 · 像当地人一样自在畅游</span><span class="en">Travel the Way You Live · Roam Like a Local</span></div>
+    <div style="margin-top:10px;font-size:12px;color:#8a8378;">xplvxing.com</div>
+  </footer>
+
+  <script>
+    // 中英文切换
+    const btn = document.getElementById('langBtn');
+    btn.addEventListener('click', function(){
+      const body = document.body;
+      if(body.classList.contains('lang-zh')){
+        body.classList.remove('lang-zh'); body.classList.add('lang-en');
+        btn.textContent = 'ZH';
+      } else {
+        body.classList.remove('lang-en'); body.classList.add('lang-zh');
+        btn.textContent = 'EN';
+      }
+    });
+    // 复制微信号
+    function copyText(t){
+      if(navigator.clipboard){ navigator.clipboard.writeText(t).then(function(){ alert('已复制：'+t); }); }
+      else { const r=document.createRange(); const n=document.createElement('div'); n.textContent=t; document.body.appendChild(n); r.selectNode(n); getSelection().removeAllRanges(); getSelection().addRange(r); try{document.execCommand('copy');}catch(e){} document.body.removeChild(n); alert('已复制：'+t); }
+    }
+  </script>
+</body>
+</html>
